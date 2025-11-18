@@ -1,60 +1,58 @@
-const { conexion } = require('./basedatos/conexion')
-const express = require("express")
-const cors = require("cors")
+const { conexion } = require('./basedatos/conexion');
+const express = require("express");
+const cors = require("cors");
 
-//Inicializar app
-console.log("app de node arrancada")
+// Inicializar app
+console.log("App de Node arrancada");
 
-//Conenctar a la base de datos
+// Conectar a la base de datos
 conexion();
 
 // Crear servidor Node
-const app = express()
-const puerto = 3900
+const app = express();
+const puerto = 3900;
 
-//Configurar cors
-app.use(cors())
+// Configurar CORS
+app.use(cors());
 
-//Convertir body a objeto js
-app.use(express.json())///recibir datos con formato JSON
-app.use(express.urlencoded({extended: true}))// convirtiendo formato encode a JSON
+// Convertir body a objeto JS
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
+/* RUTAS */
+const rutas_articulo = require("./rutas/ArticuloRutas");
 
-/*RUTAS*/ 
-const rutas_articlo = require("./rutas/ArticuloRutas")
+// Cargar rutas
+app.use("/api", rutas_articulo);
+/* FIN RUTAS */
 
-//cargando rutas
-app.use("/api", rutas_articlo)
-/*FIN RUTAS*/
-
-// rutas de prueba hardcodeadas
+// Ruta de prueba hardcodeada
 app.get("/probando", (req, res) => {
 
-    console.log("Se ha ejecutado el endpoint probando ")
+    console.log("Se ha ejecutado el endpoint probando");
 
-    return res.status(200).json(
-        [{
-            curo: "Master en React",
+    return res.status(200).json([
+        {
+            curso: "Master en React",
             autor: "Manuel Hernandez Herrera",
             url: "manuelhernandezweb.com.mx/master-react-pro"
         },
         {
-            curo: "Master en React Native",
+            curso: "Master en React Native",
             autor: "Manuel Hernandez Herrera",
             url: "manuelhernandezweb.com.mx/master-react-native"
-        }]
-    )
+        }
+    ]);
+});
 
-})
-
-app.get("/", (req, res)=>{
+// Ruta principal
+app.get("/", (req, res) => {
     return res.send(`
-        <h1>Empezando un api rest con node</h1>
-    `)
-})
+        <h1>Empezando un API REST con Node</h1>
+    `);
+});
 
-
-//crear servidor y escuchar peticiones http
+// Iniciar servidor
 app.listen(puerto, () => {
-    console.log("Servidor corriendo en el puerto " + puerto)
-})
+    console.log("Servidor corriendo en el puerto " + puerto);
+});
