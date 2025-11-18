@@ -1,3 +1,5 @@
+// C:\Users\luisg\OneDrive\Escritorio\Desplieguea\api-res-7a-full\index.js
+
 const { conexion } = require('./basedatos/conexion');
 const express = require("express");
 const cors = require("cors");
@@ -10,12 +12,13 @@ conexion();
 
 // Crear servidor Node
 const app = express();
-const puerto = 3900;
+// Configuración clave para Render: Usar el puerto de entorno (PORT) si está disponible, sino usar 3900
+const puerto = process.env.PORT || 3900; 
 
 // Configurar CORS
 app.use(cors());
 
-// Convertir body a objeto JS
+// Convertir body a objeto JS (Middleware)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -53,6 +56,7 @@ app.get("/", (req, res) => {
 });
 
 // Iniciar servidor
-app.listen(puerto, () => {
+// Corrección clave para Render: Escuchar en la dirección '0.0.0.0' y en el puerto configurado.
+app.listen(puerto, '0.0.0.0', () => {
     console.log("Servidor corriendo en el puerto " + puerto);
 });
